@@ -1,10 +1,18 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+
 const items = [
   { name: 'home', label: 'Головна', icon: 'home' },
   { name: 'plans', label: 'Плани', icon: 'checklist' },
   { name: 'history', label: 'Історія', icon: 'history' },
   { name: 'profile', label: 'Профіль', icon: 'person' },
 ]
+
+const route = useRoute()
+
+// nested screens like plans/exercises keep their parent tab highlighted
+const activeTab = computed(() => route.meta.tab ?? route.name)
 </script>
 
 <template>
@@ -19,7 +27,7 @@ const items = [
         :key="item.name"
         :to="{ name: item.name }"
         class="nav-item"
-        exact-active-class="active"
+        :class="{ active: activeTab === item.name }"
       >
         <span class="indicator">
           <span class="icon" aria-hidden="true">{{ item.icon }}</span>

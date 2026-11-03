@@ -3,6 +3,16 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { setUnauthorizedHandler } from '@/api/client'
 import { useAuthStore } from '@/stores/auth'
 
+declare module 'vue-router' {
+  interface RouteMeta {
+    title?: string
+    auth?: boolean
+    guest?: boolean
+    // the bottom nav tab that stays highlighted on a nested screen
+    tab?: string
+  }
+}
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -34,9 +44,27 @@ const router = createRouter({
         {
           path: 'plans',
           name: 'plans',
-          component: () => import('@/views/ComingSoonView.vue'),
-          props: { title: 'Плани', icon: 'checklist' },
+          component: () => import('@/views/PlansView.vue'),
           meta: { title: 'Плани' },
+        },
+        {
+          path: 'plans/exercises',
+          name: 'exercises',
+          component: () => import('@/views/ExercisesView.vue'),
+          meta: { title: 'Вправи', tab: 'plans' },
+        },
+        {
+          path: 'plans/exercises/new',
+          name: 'exercise-create',
+          component: () => import('@/views/ExerciseFormView.vue'),
+          meta: { title: 'Нова вправа', tab: 'plans' },
+        },
+        {
+          path: 'plans/exercises/:id(\\d+)',
+          name: 'exercise-edit',
+          component: () => import('@/views/ExerciseFormView.vue'),
+          props: true,
+          meta: { title: 'Редагувати вправу', tab: 'plans' },
         },
         {
           path: 'history',
