@@ -1,0 +1,140 @@
+/* each color is light-dark(light, dark); color-scheme below decides which one wins */
+:root {
+  color-scheme: light dark;
+
+  --primary: light-dark(#4c662b, #b1d18a);
+  --on-primary: light-dark(#ffffff, #1f3701);
+  --primary-container: light-dark(#cdeda3, #354e16);
+  --on-primary-container: light-dark(#354e16, #cdeda3);
+  --secondary-container: light-dark(#dce7c8, #404a33);
+  --on-secondary-container: light-dark(#404a33, #dce7c8);
+  --tertiary-container: light-dark(#bcece7, #1f4e4b);
+  --on-tertiary-container: light-dark(#1f4e4b, #bcece7);
+  --surface: light-dark(#f9faef, #12140e);
+  --surface-container-low: light-dark(#f3f4e9, #1a1c16);
+  --surface-container: light-dark(#eeefe3, #1e201a);
+  --surface-container-high: light-dark(#e8e9de, #282b24);
+  --surface-container-highest: light-dark(#e2e3d8, #33362e);
+  --on-surface: light-dark(#1a1c16, #e2e3d8);
+  --on-surface-variant: light-dark(#44483d, #c5c8ba);
+  --outline: light-dark(#75796c, #8f9285);
+  --error: light-dark(#ba1a1a, #ffb4ab);
+  --error-container: light-dark(#ffdad6, #93000a);
+  --on-error-container: light-dark(#93000a, #ffdad6);
+
+  --shape-s: 12px;
+  --shape-m: 16px;
+  --shape-l: 28px;
+  --shape-xl: 40px;
+  --shape-full: 999px;
+
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --emphasized: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* the user's choice from Profile; without data-theme the system setting decides */
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100dvh;
+}
+
+body {
+  background: var(--surface);
+  color: var(--on-surface);
+  font-family: 'Roboto Flex', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.icon {
+  font-family: 'Material Symbols Rounded';
+  font-size: 24px;
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  white-space: nowrap;
+  font-feature-settings: 'liga';
+  font-variation-settings: 'FILL' var(--icon-fill, 0), 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  transition: font-variation-settings 200ms var(--emphasized);
+  user-select: none;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 56px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: var(--shape-full);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    border-radius 240ms var(--spring),
+    background-color 150ms linear,
+    opacity 150ms linear;
+}
+
+.btn:active:not(:disabled) {
+  border-radius: var(--shape-m);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.btn-filled {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.btn-tonal {
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
