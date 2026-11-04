@@ -4,9 +4,10 @@ import { useRouter } from 'vue-router'
 
 import { ApiError } from '@/api/client'
 import ConfirmDialog from '@/components/ConfirmDialog.vue'
+import MetricChips from '@/components/MetricChips.vue'
 import TextField from '@/components/TextField.vue'
 import TopBar from '@/components/TopBar.vue'
-import { type ExerciseMetric, METRICS, useExercisesStore } from '@/stores/exercises'
+import { type ExerciseMetric, orderMetrics, useExercisesStore } from '@/stores/exercises'
 
 const props = defineProps<{ id?: string }>()
 
@@ -72,7 +73,7 @@ async function submit() {
   const data = {
     name: form.name.trim(),
     description: form.description.trim() || null,
-    metrics: METRICS.map((metric) => metric.value).filter((value) => form.metrics.includes(value)),
+    metrics: orderMetrics(form.metrics),
   }
 
   try {
@@ -119,18 +120,7 @@ async function remove() {
     <TextField v-model="form.name" label="Назва" maxlength="255" :error="fieldErrors.name" />
     <TextField v-model="form.description" label="Опис (необовʼязково)" maxlength="2000" />
 
-    <fieldset>
-      <legend>Що міряємо</legend>
-      <div class="chips">
-        <label v-for="metric in METRICS" :key="metric.value" class="chip">
-          <input v-model="form.metrics" type="checkbox" :value="metric.value">
-          <span class="icon check" aria-hidden="true">check</span>
-          {{ metric.label }}
-        </label>
-      </div>
-      <p v-if="fieldErrors.metrics" class="error">{{ fieldErrors.metrics }}</p>
-      <p class="hint">Жим — повтори й вага, біг — дистанція й час, планка — час.</p>
-    </fieldset>
+    <MetricChips v-model="form.metrics" :error="fieldErrors.metrics" />
 
     <p v-if="formError" class="form-error" role="alert">{{ formError }}</p>
 
@@ -158,104 +148,12 @@ async function remove() {
   />
 </template>
 
-<style scoped>
-.notice {
-  margin-top: 24px;
-  color: var(--on-surface-variant);
-  text-align: center;
-}
 
+<style scoped>
 form {
   display: grid;
   gap: 12px;
   margin-top: 24px;
-}
-
-fieldset {
-  min-width: 0;
-  margin: 8px 0 0;
-  padding: 0;
-  border: 0;
-}
-
-legend {
-  margin-bottom: 8px;
-  padding: 0 4px;
-  color: var(--on-surface-variant);
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-/* filter chips: outlined until chosen, then filled with a check */
-.chip {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 0 16px;
-  border: 1px solid var(--outline);
-  border-radius: var(--shape-s);
-  color: var(--on-surface-variant);
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background-color 150ms linear,
-    border-color 150ms linear;
-}
-
-.chip input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.chip .check {
-  display: none;
-  font-size: 18px;
-}
-
-.chip:has(input:checked) {
-  border-color: transparent;
-  background: var(--secondary-container);
-  color: var(--on-secondary-container);
-  padding-left: 10px;
-}
-
-.chip:has(input:checked) .check {
-  display: inline;
-}
-
-.chip:has(input:focus-visible) {
-  outline: 3px solid var(--primary);
-  outline-offset: 2px;
-}
-
-.error {
-  margin: 8px 4px 0;
-  color: var(--error);
-  font-size: 13px;
-}
-
-.hint {
-  margin: 8px 4px 0;
-  color: var(--on-surface-variant);
-  font-size: 13px;
-}
-
-.form-error {
-  padding: 12px 16px;
-  border-radius: var(--shape-m);
-  background: var(--error-container);
-  color: var(--on-error-container);
-  font-size: 14px;
 }
 
 form .btn-filled {

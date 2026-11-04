@@ -171,14 +171,6 @@ form .btn {
   margin-top: 12px;
 }
 
-.form-error {
-  padding: 12px 16px;
-  border-radius: var(--shape-m);
-  background: var(--error-container);
-  color: var(--on-error-container);
-  font-size: 14px;
-}
-
 .switch {
   margin-top: 24px;
   color: var(--on-surface-variant);

@@ -30,6 +30,19 @@ export function metricsLabel(metrics: ExerciseMetric[]) {
     .join(' · ')
 }
 
+// chips are ticked in any order, the API gets them in the METRICS order
+export function orderMetrics(metrics: ExerciseMetric[]) {
+  return METRICS.map((metric) => metric.value).filter((value) => metrics.includes(value))
+}
+
+export function filterByName(exercises: Exercise[], query: string) {
+  const needle = query.trim().toLocaleLowerCase('uk')
+
+  return needle
+    ? exercises.filter((exercise) => exercise.name.toLocaleLowerCase('uk').includes(needle))
+    : exercises
+}
+
 function byName(a: Exercise, b: Exercise) {
   return a.name.localeCompare(b.name, 'uk')
 }

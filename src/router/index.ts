@@ -48,6 +48,19 @@ const router = createRouter({
           meta: { title: 'Плани' },
         },
         {
+          path: 'plans/new',
+          name: 'plan-create',
+          component: () => import('@/views/PlanFormView.vue'),
+          meta: { title: 'Новий план', tab: 'plans' },
+        },
+        {
+          path: 'plans/:id(\\d+)',
+          name: 'plan-edit',
+          component: () => import('@/views/PlanFormView.vue'),
+          props: true,
+          meta: { title: 'Редагувати план', tab: 'plans' },
+        },
+        {
           path: 'plans/exercises',
           name: 'exercises',
           component: () => import('@/views/ExercisesView.vue'),
